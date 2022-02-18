@@ -15,14 +15,15 @@
         <form method="POST" action="<?php htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <h3>Dados pessoais</h3>
             <hr>
-            <p>Nome: <input type="text" name="nome" placeholder="Digite seu nome completo"></P>
-            <p><b>Genero:</b> <input type="radio" name="sexo" value="masculino" >masculino
+            <p>Nome: <input type="text" name="nome" placeholder="Digite seu nome completo"> *</P>
+            <p><b>Genero:</b> <input type="radio" name="sexo" value="masculino">masculino
                 <input type="radio" name="sexo" value="feminino">feminino
                 <input type="radio" name="sexo" value="outro">não quero informar
+                *
             </p>
             Tel:<input type="tel" name="telefone" placeholder="(xx) xxxxx-xxxx">
-            <p>E-mail: <input type="email" name="email" placeholder="exemplo@gmail.com"></p>
-            <p>Website: <input type="url" name="website" placeholder="https://exemplo.com.br"></p>
+            <p>E-mail: <input type="email" name="email" placeholder="exemplo@gmail.com"> *</p>
+            <p>Website: <input type="url" name="website" placeholder="https://exemplo.com.br"> *</p>
 
             <h3>Comentário</h3>
             <textarea name="comment" rows="10" cols="40">comment:</textarea>
@@ -41,7 +42,14 @@
     $website;
     $comment;
 
+    //variaveis de error
+    $nameErr;
+    $emailErr;
+    $genderErr;
+    $websiteErr;
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
         $nome = test_input($_POST['nome']);
         $genero = test_input($_POST['sexo']);
         $telefone = test_input($_POST['telefone']);
@@ -49,13 +57,50 @@
         $website = test_input($_POST['website']);
         $comment = test_input($_POST['comment']);
 
-        ?>
+        if (empty($_POST['nome'])) {
+            $nameErr = "Nome é obrigatório.";
+            echo "error!!! $nameErr";
+        } else {
+            $nome = test_input($_POST['nome']);
+        }
+        if (empty($_POST['email'])) {
+            $emailErr = "<br>E-mail é obrigatório.";
+            echo "error!!! $emailErr";
+        } else {
+            $email = test_input($_POST['email']);
+        }
+        if (empty($_POST['sexo'])) {
+            $genderErr = "<br>genero é obritório.";
+            echo "Error!!! $genderErr";
+        } else {
+            $genero = test_input($_POST['sexo']);
+        }
+        if (empty($_POST['website'])) {
+            $websiteErr = "<br>website é obrigatório.";
+            echo "Error!!! $websiteErr";
+        } else {
+            $website = test_input($_POST['website']);
+        }
+    ?>
 
         <div>
-            <h2>DADOS REGISTRADOS</h2>
+            <h2>Sua entrada:</h2>
+            <?php
+            echo "Nome: ".$nome;
+            echo "<br>";
+            echo "Tel: ".$telefone;
+            echo "<br>";
+            echo "E-mail: ".$email;
+            echo "<br>";
+            echo "Site: ".$website;
+            echo "<br>";
+            echo "Comentário: ".$comment;
+            echo "<br>";
+            echo "Genêro: ".$genero;
+            ?>
         </div>
 
-        <?php
+    <?php
     }
 
     function test_input($data)
